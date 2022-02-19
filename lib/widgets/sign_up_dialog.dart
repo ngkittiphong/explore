@@ -2,14 +2,12 @@ import 'package:explore/screens/home_page.dart';
 import 'package:explore/utils/authentication.dart';
 import 'package:flutter/material.dart';
 
-import 'google_sign_in_button.dart';
-
-class AuthDialog extends StatefulWidget {
+class SignUpDialog extends StatefulWidget {
   @override
   _AuthDialogState createState() => _AuthDialogState();
 }
 
-class _AuthDialogState extends State<AuthDialog> {
+class _AuthDialogState extends State<SignUpDialog> {
   late TextEditingController textControllerEmail;
   late FocusNode textFocusNodeEmail;
   bool _isEditingEmail = false;
@@ -94,6 +92,134 @@ class _AuthDialogState extends State<AuthDialog> {
                   ),
                 ),
                 SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 20.0,
+                    bottom: 8,
+                  ),
+                  child: Text(
+                    'Full Name',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.subtitle2!.color,
+                      fontSize: 18,
+                      // fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.bold,
+                      // letterSpacing: 3,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 20.0,
+                    right: 20,
+                  ),
+                  child: TextField(
+                    focusNode: textFocusNodeEmail,
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    controller: textControllerEmail,
+                    autofocus: false,
+                    onChanged: (value) {
+                      setState(() {
+                        _isEditingEmail = true;
+                      });
+                    },
+                    onSubmitted: (value) {
+                      textFocusNodeEmail.unfocus();
+                      FocusScope.of(context)
+                          .requestFocus(textFocusNodePassword);
+                    },
+                    style: TextStyle(color: Colors.black),
+                    decoration: InputDecoration(
+                      border: new OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          color: Colors.blueGrey[800]!,
+                          width: 3,
+                        ),
+                      ),
+                      filled: true,
+                      hintStyle: new TextStyle(
+                        color: Colors.blueGrey[300],
+                      ),
+                      hintText: "Full Name",
+                      fillColor: Colors.white,
+                      // errorText: _isEditingEmail
+                      //     ? _validateEmail(textControllerEmail.text)
+                      //     : null,
+                      errorStyle: TextStyle(
+                        fontSize: 12,
+                        color: Colors.redAccent,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 20.0,
+                    bottom: 8,
+                  ),
+                  child: Text(
+                    'Phone No.',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.subtitle2!.color,
+                      fontSize: 18,
+                      // fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.bold,
+                      // letterSpacing: 3,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 20.0,
+                    right: 20,
+                  ),
+                  child: TextField(
+                    focusNode: textFocusNodeEmail,
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    controller: textControllerEmail,
+                    autofocus: false,
+                    onChanged: (value) {
+                      setState(() {
+                        _isEditingEmail = true;
+                      });
+                    },
+                    onSubmitted: (value) {
+                      textFocusNodeEmail.unfocus();
+                      FocusScope.of(context)
+                          .requestFocus(textFocusNodePassword);
+                    },
+                    style: TextStyle(color: Colors.black),
+                    decoration: InputDecoration(
+                      border: new OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          color: Colors.blueGrey[800]!,
+                          width: 3,
+                        ),
+                      ),
+                      filled: true,
+                      hintStyle: new TextStyle(
+                        color: Colors.blueGrey[300],
+                      ),
+                      hintText: "Phone No.",
+                      fillColor: Colors.white,
+                      // errorText: _isEditingEmail
+                      //     ? _validateEmail(textControllerEmail.text)
+                      //     : null,
+                      errorStyle: TextStyle(
+                        fontSize: 12,
+                        color: Colors.redAccent,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 20.0,
@@ -227,100 +353,6 @@ class _AuthDialogState extends State<AuthDialog> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Flexible(
-                        flex: 1,
-                        child: Container(
-                          width: double.maxFinite,
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              primary: Colors.blueGrey.shade800,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                            ),
-                            onPressed: () async {
-                              setState(() {
-                                _isLoggingIn = true;
-                                textFocusNodeEmail.unfocus();
-                                textFocusNodePassword.unfocus();
-                              });
-                              if (_validateEmail(textControllerEmail.text) ==
-                                      null &&
-                                  _validatePassword(
-                                          textControllerPassword.text) ==
-                                      null) {
-                                await signInWithEmailPassword(
-                                        textControllerEmail.text,
-                                        textControllerPassword.text)
-                                    .then((result) {
-                                  if (result != null) {
-                                    print(result);
-                                    setState(() {
-                                      loginStatus =
-                                          'You have successfully logged in';
-                                      loginStringColor = Colors.green;
-                                    });
-                                    Future.delayed(Duration(milliseconds: 500),
-                                        () {
-                                      Navigator.of(context).pop();
-                                      Navigator.of(context)
-                                          .pushReplacement(MaterialPageRoute(
-                                        fullscreenDialog: true,
-                                        builder: (context) => HomePage(),
-                                      ));
-                                    });
-                                  }
-                                }).catchError((error) {
-                                  print('Login Error: $error');
-                                  setState(() {
-                                    loginStatus =
-                                        'Error occured while logging in';
-                                    loginStringColor = Colors.red;
-                                  });
-                                });
-                              } else {
-                                setState(() {
-                                  loginStatus = 'Please enter email & password';
-                                  loginStringColor = Colors.red;
-                                });
-                              }
-                              setState(() {
-                                _isLoggingIn = false;
-                                textControllerEmail.text = '';
-                                textControllerPassword.text = '';
-                                _isEditingEmail = false;
-                                _isEditingPassword = false;
-                              });
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                top: 15.0,
-                                bottom: 15.0,
-                              ),
-                              child: _isLoggingIn
-                                  ? SizedBox(
-                                      height: 16,
-                                      width: 16,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        valueColor:
-                                            new AlwaysStoppedAnimation<Color>(
-                                          Colors.white,
-                                        ),
-                                      ),
-                                    )
-                                  : Text(
-                                      'Log in',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 20),
                       // Flexible(
                       //   flex: 1,
                       //   child: Container(
@@ -329,36 +361,61 @@ class _AuthDialogState extends State<AuthDialog> {
                       //       style: TextButton.styleFrom(
                       //         primary: Colors.blueGrey.shade800,
                       //         shape: RoundedRectangleBorder(
-                      //           borderRadius: BorderRadius.circular(15),
+                      //           borderRadius: BorderRadius.circular(15.0),
                       //         ),
                       //       ),
                       //       onPressed: () async {
                       //         setState(() {
-                      //           _isRegistering = true;
+                      //           _isLoggingIn = true;
+                      //           textFocusNodeEmail.unfocus();
+                      //           textFocusNodePassword.unfocus();
                       //         });
-                      //         await registerWithEmailPassword(
-                      //                 textControllerEmail.text,
-                      //                 textControllerPassword.text)
-                      //             .then((result) {
-                      //           if (result != null) {
+                      //         if (_validateEmail(textControllerEmail.text) ==
+                      //                 null &&
+                      //             _validatePassword(
+                      //                     textControllerPassword.text) ==
+                      //                 null) {
+                      //           await signInWithEmailPassword(
+                      //                   textControllerEmail.text,
+                      //                   textControllerPassword.text)
+                      //               .then((result) {
+                      //             if (result != null) {
+                      //               print(result);
+                      //               setState(() {
+                      //                 loginStatus =
+                      //                     'You have successfully logged in';
+                      //                 loginStringColor = Colors.green;
+                      //               });
+                      //               Future.delayed(Duration(milliseconds: 500),
+                      //                   () {
+                      //                 Navigator.of(context).pop();
+                      //                 Navigator.of(context)
+                      //                     .pushReplacement(MaterialPageRoute(
+                      //                   fullscreenDialog: true,
+                      //                   builder: (context) => HomePage(),
+                      //                 ));
+                      //               });
+                      //             }
+                      //           }).catchError((error) {
+                      //             print('Login Error: $error');
                       //             setState(() {
                       //               loginStatus =
-                      //                   'You have registered successfully';
-                      //               loginStringColor = Colors.green;
+                      //                   'Error occured while logging in';
+                      //               loginStringColor = Colors.red;
                       //             });
-                      //             print(result);
-                      //           }
-                      //         }).catchError((error) {
-                      //           print('Registration Error: $error');
+                      //           });
+                      //         } else {
                       //           setState(() {
-                      //             loginStatus =
-                      //                 'Error occured while registering';
+                      //             loginStatus = 'Please enter email & password';
                       //             loginStringColor = Colors.red;
                       //           });
-                      //         });
-
+                      //         }
                       //         setState(() {
-                      //           _isRegistering = false;
+                      //           _isLoggingIn = false;
+                      //           textControllerEmail.text = '';
+                      //           textControllerPassword.text = '';
+                      //           _isEditingEmail = false;
+                      //           _isEditingPassword = false;
                       //         });
                       //       },
                       //       child: Padding(
@@ -366,7 +423,7 @@ class _AuthDialogState extends State<AuthDialog> {
                       //           top: 15.0,
                       //           bottom: 15.0,
                       //         ),
-                      //         child: _isRegistering
+                      //         child: _isLoggingIn
                       //             ? SizedBox(
                       //                 height: 16,
                       //                 width: 16,
@@ -379,7 +436,7 @@ class _AuthDialogState extends State<AuthDialog> {
                       //                 ),
                       //               )
                       //             : Text(
-                      //                 'Sign up',
+                      //                 'Log in',
                       //                 style: TextStyle(
                       //                   fontSize: 14,
                       //                   color: Colors.white,
@@ -389,6 +446,75 @@ class _AuthDialogState extends State<AuthDialog> {
                       //     ),
                       //   ),
                       // ),
+                      // SizedBox(width: 20),
+                      Flexible(
+                        flex: 1,
+                        child: Container(
+                          width: double.maxFinite,
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              primary: Colors.blueGrey.shade800,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                            onPressed: () async {
+                              setState(() {
+                                _isRegistering = true;
+                              });
+                              await registerWithEmailPassword(
+                                      textControllerEmail.text,
+                                      textControllerPassword.text)
+                                  .then((result) {
+                                if (result != null) {
+                                  setState(() {
+                                    loginStatus =
+                                        'You have registered successfully';
+                                    loginStringColor = Colors.green;
+                                  });
+                                  print(result);
+                                }
+                              }).catchError((error) {
+                                print('Registration Error: $error');
+                                setState(() {
+                                  loginStatus =
+                                      'Error occured while registering';
+                                  loginStringColor = Colors.red;
+                                });
+                              });
+
+                              setState(() {
+                                _isRegistering = false;
+                              });
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                top: 15.0,
+                                bottom: 15.0,
+                              ),
+                              child: _isRegistering
+                                  ? SizedBox(
+                                      height: 16,
+                                      width: 16,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor:
+                                            new AlwaysStoppedAnimation<Color>(
+                                          Colors.white,
+                                        ),
+                                      ),
+                                    )
+                                  : Text(
+                                      'Sign up',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

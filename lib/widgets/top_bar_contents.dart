@@ -2,6 +2,7 @@ import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:explore/screens/home_page.dart';
 import 'package:explore/utils/authentication.dart';
 import 'package:explore/widgets/auth_dialog.dart';
+import 'package:explore/widgets/sign_up_dialog.dart';
 import 'package:flutter/material.dart';
 
 class TopBarContents extends StatefulWidget {
@@ -63,32 +64,48 @@ class _TopBarContentsState extends State<TopBarContents> {
                               : _isHovering[0] = false;
                         });
                       },
-                      onTap: () {},
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Discover',
-                            style: TextStyle(
-                              color: _isHovering[0]
-                                  ? Colors.blue[200]
-                                  : Colors.white,
+                      //onTap: () {},
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => SignUpDialog(),
+                        );
+                      },
+
+                      child: userEmail != null
+                          ? Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'Add User',
+                                  style: TextStyle(
+                                    color: _isHovering[0]
+                                        ? Colors.blue[200]
+                                        : Colors.white,
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                Visibility(
+                                  maintainAnimation: true,
+                                  maintainState: true,
+                                  maintainSize: true,
+                                  visible: _isHovering[0],
+                                  child: Container(
+                                    height: 2,
+                                    width: 20,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              ],
+                            )
+                          : Text(
+                              '',
+                              style: TextStyle(
+                                color: _isHovering[3]
+                                    ? Colors.white
+                                    : Colors.white70,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 5),
-                          Visibility(
-                            maintainAnimation: true,
-                            maintainState: true,
-                            maintainSize: true,
-                            visible: _isHovering[0],
-                            child: Container(
-                              height: 2,
-                              width: 20,
-                              color: Colors.white,
-                            ),
-                          )
-                        ],
-                      ),
                     ),
                     SizedBox(width: screenSize.width / 20),
                     InkWell(
@@ -100,31 +117,40 @@ class _TopBarContentsState extends State<TopBarContents> {
                         });
                       },
                       onTap: () {},
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Contact Us',
-                            style: TextStyle(
-                              color: _isHovering[1]
-                                  ? Colors.blue[200]
-                                  : Colors.white,
+                      child: userEmail == null
+                          ? Text(
+                              '',
+                              style: TextStyle(
+                                color: _isHovering[3]
+                                    ? Colors.white
+                                    : Colors.white70,
+                              ),
+                            )
+                          : Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'Whatever',
+                                  style: TextStyle(
+                                    color: _isHovering[1]
+                                        ? Colors.blue[200]
+                                        : Colors.white,
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                Visibility(
+                                  maintainAnimation: true,
+                                  maintainState: true,
+                                  maintainSize: true,
+                                  visible: _isHovering[1],
+                                  child: Container(
+                                    height: 2,
+                                    width: 20,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              ],
                             ),
-                          ),
-                          SizedBox(height: 5),
-                          Visibility(
-                            maintainAnimation: true,
-                            maintainState: true,
-                            maintainSize: true,
-                            visible: _isHovering[1],
-                            child: Container(
-                              height: 2,
-                              width: 20,
-                              color: Colors.white,
-                            ),
-                          )
-                        ],
-                      ),
                     ),
                   ],
                 ),
